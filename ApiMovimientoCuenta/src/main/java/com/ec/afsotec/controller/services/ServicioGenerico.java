@@ -18,10 +18,14 @@ import javax.persistence.StoredProcedureQuery;
 import org.springframework.stereotype.Service;
 
 import com.ec.afsotec.Exceptions.ApiRequestException;
+import com.ec.afsotec.modelo.base.ConceptoNotasDAO;
 import com.ec.afsotec.modelo.base.MovimientoCuentaDao;
 import com.ec.afsotec.modelo.base.SaldoCuentaVDao;
+import com.ec.afsotec.modelo.base.ServiciosDao;
 import com.ec.afsotec.modelo.request.ParameterRequest;
+import com.ec.afsotec.modelo.request.ParameterRequestConceptoNotas;
 import com.ec.afsotec.modelo.request.ParameterRequestSaldoCuenta;
+import com.ec.afsotec.modelo.request.ParameterRequestServicios;
 
 @Service
 public class ServicioGenerico {
@@ -39,6 +43,7 @@ public class ServicioGenerico {
 		query.registerStoredProcedureParameter("NCUENTA", Integer.class, ParameterMode.IN);
 		query.registerStoredProcedureParameter("FINICIO", String.class, ParameterMode.IN);
 		query.registerStoredProcedureParameter("FFIN", String.class, ParameterMode.IN);
+		
 		String inicio = sm.format(param.getfInicio());
 		String fin = sm.format(param.getfFin());
 		System.out.println("inicio " + inicio);
@@ -109,6 +114,58 @@ public class ServicioGenerico {
 			listRespuesta
 					.add(new SaldoCuentaVDao(idEmpresa, product, cuenta, titular, saldoT, saldoDi, saldoBloq, estado));
 		}
+		return listRespuesta;
+	}
+	
+	public List<ServiciosDao> llamarProcedimientoServios(String procedureName, ParameterRequestServicios param){
+		
+		StoredProcedureQuery query = this.entityManager.createStoredProcedureQuery(procedureName);
+		query.registerStoredProcedureParameter("EMPRESA", Integer.class, ParameterMode.IN);
+		query.registerStoredProcedureParameter("TIPO", String.class, ParameterMode.IN);
+		
+		
+		query.setParameter("EMPRESA", param.getEmpresa());
+		query.setParameter("TIPO", param.getTipo());
+		query.execute();
+		
+		List<Object[]> json = (List<Object[]>) query.getResultList();
+		List<ServiciosDao> listRespuesta = new ArrayList<>();
+		for (Object[] tupla : json) {
+			
+			Short empresaId = (Short) tupla[0];
+			Short servicioId = (Short) tupla[1];
+			String decripcion= (String) tupla[2];
+			
+			ServiciosDao servicios=new ServiciosDao(empresaId, servicioId, decripcion);
+			listRespuesta.add(servicios);
+		}
+		
+		return listRespuesta;
+	}
+	
+public List<ConceptoNotasDAO> llamarProcedimientoConceptoNotas(String procedureName, ParameterRequestConceptoNotas param){
+		
+		StoredProcedureQuery query = this.entityManager.createStoredProcedureQuery(procedureName);
+		query.registerStoredProcedureParameter("EMPRESA", Integer.class, ParameterMode.IN);
+		query.registerStoredProcedureParameter("TRANSACCION", String.class, ParameterMode.IN);
+		
+		
+		query.setParameter("EMPRESA", param.getEmpresa());
+		query.setParameter("TRANSACCION", param.getTrans());
+		query.execute();
+		
+		List<Object[]> json = (List<Object[]>) query.getResultList();
+		List<ConceptoNotasDAO> listRespuesta = new ArrayList<>();
+		for (Object[] tupla : json) {
+			
+			Short empresaId = (Short) tupla[0];
+			Short conceptoTransID = (Short) tupla[1];
+			String conceptoTrans= (String) tupla[2];
+			
+			ConceptoNotasDAO servicios=new ConceptoNotasDAO(empresaId, conceptoTransID, conceptoTrans);
+			listRespuesta.add(servicios);
+		}
+		
 		return listRespuesta;
 	}
 

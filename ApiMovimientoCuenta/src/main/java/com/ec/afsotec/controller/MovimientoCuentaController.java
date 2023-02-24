@@ -19,17 +19,21 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.ec.afsotec.controller.services.ServicioGenerico;
+import com.ec.afsotec.modelo.base.ConceptoNotasDAO;
 import com.ec.afsotec.modelo.base.MovimientoCuentaDao;
 import com.ec.afsotec.modelo.base.SaldoCuentaVDao;
+import com.ec.afsotec.modelo.base.ServiciosDao;
 import com.ec.afsotec.modelo.request.ParameterRequest;
+import com.ec.afsotec.modelo.request.ParameterRequestConceptoNotas;
 import com.ec.afsotec.modelo.request.ParameterRequestSaldoCuenta;
+import com.ec.afsotec.modelo.request.ParameterRequestServicios;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api")
-@Api(value = " API Rest", tags = "Cuenta")
+
 public class MovimientoCuentaController {
 
 	
@@ -107,5 +111,47 @@ public class MovimientoCuentaController {
 			return new ResponseEntity<String>("Error al consumir: " + e.getMessage(), HttpStatus.OK);
 		}
 
+	}
+	
+	@RequestMapping(value = "/servicio/", method = RequestMethod.POST)
+	@ApiOperation(tags = "Servicios ", value = "Movimento de cuenta EMPRESA=2,   TIPO='I'")
+	public ResponseEntity<?> servicios(@RequestBody ParameterRequestServicios param){
+		HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory(HttpClientBuilder.create().build());
+		RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+	
+		try {	
+			
+			List<ServiciosDao> res=servioGenerico.llamarProcedimientoServios("DB2ADMIN.SP_SERVICIOS", param);
+			
+			return new ResponseEntity<>(res, HttpStatus.OK);
+			
+		} catch (Exception e) {
+			System.out.println("ERROR AL CONSULTAR " + e.getMessage());
+			return new ResponseEntity<String>("Error al consumir: " + e.getMessage(), HttpStatus.OK);
+		}
+		
+	}
+	
+	@RequestMapping(value = "/conceptos-notas/", method = RequestMethod.POST)
+	@ApiOperation(tags = "Concepto Notas", value = "Concepto Notas EMPRESA=2 , TRANSACCION='ANDB'")
+	public ResponseEntity<?> conceptosNotas(@RequestBody ParameterRequestConceptoNotas param){
+		HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory(HttpClientBuilder.create().build());
+		RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+	
+		try {	
+			
+			List<ConceptoNotasDAO> res=servioGenerico.llamarProcedimientoConceptoNotas("DB2ADMIN.SP_CONCEPTOS_NOTAS", param);
+			
+			return new ResponseEntity<>(res, HttpStatus.OK);
+			
+		} catch (Exception e) {
+			System.out.println("ERROR AL CONSULTAR " + e.getMessage());
+			return new ResponseEntity<String>("Error al consumir: " + e.getMessage(), HttpStatus.OK);
+		}
+		
 	}
 }

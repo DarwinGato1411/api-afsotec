@@ -29,7 +29,7 @@ public MovimientoCuentaDao(Date fecha, Date hora, String conceptoTransaccion, St
 	this.deposito = deposito;
 	this.retiro = retiro;
 	this.saldoTotal = saldoTotal;
-	saldoDisponible = saldoDisponible;
+	this.saldoDisponible = saldoDisponible;
 }
 
 
