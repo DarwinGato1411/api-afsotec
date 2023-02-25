@@ -34,13 +34,11 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/api")
 
-public class MovimientoCuentaController {
+public class IsisController {
 
-	
 	@Autowired
 	ServicioGenerico servioGenerico;
-	
-	
+
 	@RequestMapping(value = "/movimiento-cuenta/", method = RequestMethod.POST)
 	@ApiOperation(tags = "Movimiento cuenta ", value = "Movimento de cuenta EMPRESA=2,  nCuenta=2010000003, fInicio='2000-01-01', fFin='2023-02-23'  ")
 	public ResponseEntity<?> movimientoCuenta(@RequestBody ParameterRequest param) {
@@ -51,23 +49,10 @@ public class MovimientoCuentaController {
 		RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory);
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
-//		UserDTO parametroDto = new UserDTO(param.getUserName(), param.getUserPassword());
-//		HttpEntity<UserDTO> requestBody = new HttpEntity<UserDTO>(parametroDto, headers);
-
 		try {
-			
-			List<MovimientoCuentaDao> respuesta=servioGenerico.llamarProcedimiento("DB2ADMIN.SP_MOVIMIENTOS_CUENTA", param);
-			/* URL DE CONSULTA */
-//			String URLCONSULTA = ruta + "login-externo";
-//			System.out.println("loginExterno " + URLCONSULTA);
-//			UserDTO response = restTemplate.postForObject(URLCONSULTA, requestBody, UserDTO.class);
-//			if (response.getUserPassword().toUpperCase().contains("VERIFIQUE")
-//					|| response.getUserName().toUpperCase().contains("VERIFIQUE")) {
-//				response.setEstadoPeticion(Boolean.FALSE);
-//			} else {
-//				response.setEstadoPeticion(Boolean.TRUE);
-//
-//			}
+
+			List<MovimientoCuentaDao> respuesta = servioGenerico.llamarProcedimiento("DB2ADMIN.SP_MOVIMIENTOS_CUENTA",
+					param);
 
 			List<String> prueba = new ArrayList();
 			prueba.add("EJEMPLO");
@@ -80,8 +65,7 @@ public class MovimientoCuentaController {
 		}
 
 	}
-	
-	
+
 	@RequestMapping(value = "/saldo-cuenta/", method = RequestMethod.POST)
 	@ApiOperation(tags = "Saldo cuenta ", value = "Saldo de cuenta EMPRESA=2,  nCuenta=2010000003")
 	public ResponseEntity<?> saldoCuenta(@RequestBody ParameterRequestSaldoCuenta param) {
@@ -96,14 +80,13 @@ public class MovimientoCuentaController {
 //		HttpEntity<UserDTO> requestBody = new HttpEntity<UserDTO>(parametroDto, headers);
 
 		try {
-			HashMap< String, Object> mapa = new HashMap<>();
-			mapa.put("EMPRESA",param.getIdEmpresa());
-			mapa.put("NCUENTA",param.getnCuenta());
-			
-			List<SaldoCuentaVDao> respuesta=servioGenerico.llamarProcedimientoSaldoCuenta("DB2ADMIN.SP_SALDO_CUENTA_V", mapa);
+			HashMap<String, Object> mapa = new HashMap<>();
+			mapa.put("EMPRESA", param.getIdEmpresa());
+			mapa.put("NCUENTA", param.getnCuenta());
 
-			
-			
+			List<SaldoCuentaVDao> respuesta = servioGenerico
+					.llamarProcedimientoSaldoCuenta("DB2ADMIN.SP_SALDO_CUENTA_V", mapa);
+
 			return new ResponseEntity<>(respuesta, HttpStatus.OK);
 		} catch (Exception e) {
 
@@ -112,46 +95,49 @@ public class MovimientoCuentaController {
 		}
 
 	}
-	
+
 	@RequestMapping(value = "/servicio/", method = RequestMethod.POST)
 	@ApiOperation(tags = "Servicios ", value = "Movimento de cuenta EMPRESA=2,   TIPO='I'")
-	public ResponseEntity<?> servicios(@RequestBody ParameterRequestServicios param){
-		HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory(HttpClientBuilder.create().build());
+	public ResponseEntity<?> servicios(@RequestBody ParameterRequestServicios param) {
+		HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory(
+				HttpClientBuilder.create().build());
 		RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory);
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
-	
-		try {	
-			
-			List<ServiciosDao> res=servioGenerico.llamarProcedimientoServios("DB2ADMIN.SP_SERVICIOS", param);
-			
+
+		try {
+
+			List<ServiciosDao> res = servioGenerico.llamarProcedimientoServios("DB2ADMIN.SP_SERVICIOS", param);
+
 			return new ResponseEntity<>(res, HttpStatus.OK);
-			
+
 		} catch (Exception e) {
 			System.out.println("ERROR AL CONSULTAR " + e.getMessage());
 			return new ResponseEntity<String>("Error al consumir: " + e.getMessage(), HttpStatus.OK);
 		}
-		
+
 	}
-	
+
 	@RequestMapping(value = "/conceptos-notas/", method = RequestMethod.POST)
 	@ApiOperation(tags = "Concepto Notas", value = "Concepto Notas EMPRESA=2 , TRANSACCION='ANDB'")
-	public ResponseEntity<?> conceptosNotas(@RequestBody ParameterRequestConceptoNotas param){
-		HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory(HttpClientBuilder.create().build());
+	public ResponseEntity<?> conceptosNotas(@RequestBody ParameterRequestConceptoNotas param) {
+		HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory(
+				HttpClientBuilder.create().build());
 		RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory);
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
-	
-		try {	
-			
-			List<ConceptoNotasDAO> res=servioGenerico.llamarProcedimientoConceptoNotas("DB2ADMIN.SP_CONCEPTOS_NOTAS", param);
-			
+
+		try {
+
+			List<ConceptoNotasDAO> res = servioGenerico.llamarProcedimientoConceptoNotas("DB2ADMIN.SP_CONCEPTOS_NOTAS",
+					param);
+
 			return new ResponseEntity<>(res, HttpStatus.OK);
-			
+
 		} catch (Exception e) {
 			System.out.println("ERROR AL CONSULTAR " + e.getMessage());
 			return new ResponseEntity<String>("Error al consumir: " + e.getMessage(), HttpStatus.OK);
 		}
-		
+
 	}
 }
