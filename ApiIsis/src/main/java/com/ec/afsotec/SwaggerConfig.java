@@ -26,10 +26,10 @@ public class SwaggerConfig {
 	}
 
 	private ApiInfo apiInfo() {
-		Contact contact = new Contact("Pintulac", "www.deckxel.com", "darwinvinicio14_11@hotmail.com");
+		Contact contact = new Contact("ISIS", "www.isis.com", "darwinvinicio14_11@hotmail.com");
 
-		return new ApiInfoBuilder().title("Swagger API").description("Desarrollado por Darwin Morocho")
-				.termsOfServiceUrl("www.pintulac.com").contact(contact).version("1.0").build();
+		return new ApiInfoBuilder().title("API ISIS").description("Desarrollado por Darwin Morocho")
+				.termsOfServiceUrl("www.isis.com").contact(contact).version("1.0").build();
 
 	}
 }
