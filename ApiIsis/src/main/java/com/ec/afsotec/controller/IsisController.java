@@ -21,10 +21,12 @@ import org.springframework.web.client.RestTemplate;
 import com.ec.afsotec.controller.services.ServicioGenerico;
 import com.ec.afsotec.modelo.base.ConceptoNotasDAO;
 import com.ec.afsotec.modelo.base.MovimientoCuentaDao;
+import com.ec.afsotec.modelo.base.NotasAhorrosDao;
 import com.ec.afsotec.modelo.base.SaldoCuentaVDao;
 import com.ec.afsotec.modelo.base.ServiciosDao;
 import com.ec.afsotec.modelo.request.ParameterRequest;
 import com.ec.afsotec.modelo.request.ParameterRequestConceptoNotas;
+import com.ec.afsotec.modelo.request.ParameterRequestNotasAhorros;
 import com.ec.afsotec.modelo.request.ParameterRequestSaldoCuenta;
 import com.ec.afsotec.modelo.request.ParameterRequestServicios;
 
@@ -33,7 +35,7 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api")
-
+@Api(value = "Api Isis", tags = "ISIS", description = "Web services para consumo externo")
 public class IsisController {
 
 	@Autowired
@@ -130,6 +132,31 @@ public class IsisController {
 		try {
 
 			List<ConceptoNotasDAO> res = servioGenerico.llamarProcedimientoConceptoNotas("DB2ADMIN.SP_CONCEPTOS_NOTAS",
+					param);
+
+			return new ResponseEntity<>(res, HttpStatus.OK);
+
+		} catch (Exception e) {
+			System.out.println("ERROR AL CONSULTAR " + e.getMessage());
+			return new ResponseEntity<String>("Error al consumir: " + e.getMessage(), HttpStatus.OK);
+		}
+
+	}
+	
+	
+	
+	@RequestMapping(value = "/notas-ahorro/", method = RequestMethod.POST)
+	@ApiOperation(tags = "Notas Ahorro", value = "Nota ahorro EMPRESA=2, NCUENTA=2010000003, VALOR=150, TRANSACCION='ANDB', CONCEPTO=2, COMENTARIO='PRUEBA DE NOTA DEBITO'")
+	public ResponseEntity<?> notasAhorros(@RequestBody ParameterRequestNotasAhorros param) {
+		HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory(
+				HttpClientBuilder.create().build());
+		RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		try {
+
+			NotasAhorrosDao res = servioGenerico.llamarProcedimientoNotasAhorros("DB2ADMIN.SP_NOTAS_AHORROS",
 					param);
 
 			return new ResponseEntity<>(res, HttpStatus.OK);

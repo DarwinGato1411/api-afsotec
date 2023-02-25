@@ -9,8 +9,7 @@ public class ParameterRequestNotasAhorros {
 	private String transaccion;
 	private Integer concepto;
 	private String comentario;
-	private String codigo;
-	private String mensaje;
+
 
 	public ParameterRequestNotasAhorros() {
 		super();
@@ -64,21 +63,6 @@ public class ParameterRequestNotasAhorros {
 		this.comentario = comentario;
 	}
 
-	public String getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
-
-	public String getMensaje() {
-		return mensaje;
-	}
-
-	public void setMensaje(String mensaje) {
-		this.mensaje = mensaje;
-	}
 
 	
 

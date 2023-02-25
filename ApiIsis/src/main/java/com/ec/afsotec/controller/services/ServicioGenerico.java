@@ -170,7 +170,7 @@ public class ServicioGenerico {
 		return listRespuesta;
 	}
 
-	public List<NotasAhorrosDao> llamarProcedimientoNotasAhorros(String procedureName,
+	public NotasAhorrosDao llamarProcedimientoNotasAhorros(String procedureName,
 			ParameterRequestNotasAhorros param) {
 
 		StoredProcedureQuery query = this.entityManager.createStoredProcedureQuery(procedureName);
@@ -180,8 +180,8 @@ public class ServicioGenerico {
 		query.registerStoredProcedureParameter("TRANSACCION", String.class, ParameterMode.IN);
 		query.registerStoredProcedureParameter("CONCEPTO", Integer.class, ParameterMode.IN);
 		query.registerStoredProcedureParameter("COMENTARIO", String.class, ParameterMode.IN);
-		query.registerStoredProcedureParameter("CODIGO", String.class, ParameterMode.IN);
-		query.registerStoredProcedureParameter("MENSAJE", String.class, ParameterMode.IN);
+		query.registerStoredProcedureParameter("CODIGO", String.class, ParameterMode.OUT);
+		query.registerStoredProcedureParameter("MENSAJE", String.class, ParameterMode.OUT);
 
 		query.setParameter("EMPRESA", param.getIdEmpresa());
 		query.setParameter("NCUENTA", param.getnCuenta());
@@ -189,21 +189,19 @@ public class ServicioGenerico {
 		query.setParameter("TRANSACCION", param.getTransaccion());
 		query.setParameter("CONCEPTO", param.getConcepto());
 		query.setParameter("COMENTARIO", param.getComentario());
-		query.setParameter("CODIGO", param.getCodigo());
-		query.setParameter("MENSAJE", param.getMensaje());
+		
 		query.execute();
 
-		List<Object[]> json = (List<Object[]>) query.getResultList();
+
 		List<NotasAhorrosDao> listRespuesta = new ArrayList<>();
-		for (Object[] tupla : json) {
 
-			String codigo = (String) tupla[0];
-			String mensaje = (String) tupla[1];
+			String codigo = (String) query.getOutputParameterValue("CODIGO");
+			String mensaje = (String) query.getOutputParameterValue("MENSAJE");
 
-			listRespuesta.add(new NotasAhorrosDao(codigo, mensaje));
-		}
+			
 
-		return listRespuesta;
+
+		return new NotasAhorrosDao(codigo, mensaje);
 	}
 
 }
