@@ -26,9 +26,9 @@ public class SwaggerConfig {
 	}
 
 	private ApiInfo apiInfo() {
-		Contact contact = new Contact("ISIS", "www.isis.com", "darwinvinicio14_11@hotmail.com");
+		Contact contact = new Contact("ISIS", "www.isis.com", "vhorozco@gmail.com");
 
-		return new ApiInfoBuilder().title("API ISIS").description("Desarrollado por Darwin Morocho")
+		return new ApiInfoBuilder().title("API ISIS").description("Desarrollado por Hugo Orozco - INTEGRA")
 				.termsOfServiceUrl("www.isis.com").contact(contact).version("1.0").build();
 
 	}
