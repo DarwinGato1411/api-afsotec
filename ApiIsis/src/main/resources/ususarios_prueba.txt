@@ -1,0 +1,13 @@
+admin  U6m&#Vsj$xRRuW
+usuario U6m&#Vsj$xRRuW
+
+--JSON pruebas
+{
+  "password": "U6m&#Vsj$xRRuW",
+  "username": "admin"
+}
+
+{
+  "password": "U6m&#Vsj$xRRuW",
+  "username": "usuario"
+}
