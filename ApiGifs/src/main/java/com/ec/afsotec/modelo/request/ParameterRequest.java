@@ -1,5 +1,6 @@
 package com.ec.afsotec.modelo.request;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class ParameterRequest {
@@ -7,6 +8,7 @@ public class ParameterRequest {
 	private Integer nCuenta;
 	private Date fInicio;
 	private Date fFin;
+	private BigDecimal idMovimiento;
 
 	public ParameterRequest() {
 		super();
@@ -52,4 +54,16 @@ public class ParameterRequest {
 		this.fFin = fFin;
 	}
 
+	public BigDecimal getIdMovimiento() {
+		return idMovimiento;
+	}
+
+	public void setIdMovimiento(BigDecimal idMovimiento) {
+		this.idMovimiento = idMovimiento;
+	}
+
+	
+
+	
+	
 }

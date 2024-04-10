@@ -1,12 +1,10 @@
 package com.ec.afsotec.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.ec.afsotec.controller.services.ServicioGenerico;
+import com.ec.afsotec.entidad.MovimientoCuentaFech;
 import com.ec.afsotec.modelo.base.ConceptoNotasDAO;
-import com.ec.afsotec.modelo.base.MovimientoCuentaDao;
 import com.ec.afsotec.modelo.base.NotasAhorrosDao;
 import com.ec.afsotec.modelo.base.SaldoCuentaVDao;
 import com.ec.afsotec.modelo.base.ServiciosDao;
@@ -29,18 +27,26 @@ import com.ec.afsotec.modelo.request.ParameterRequestConceptoNotas;
 import com.ec.afsotec.modelo.request.ParameterRequestNotasAhorros;
 import com.ec.afsotec.modelo.request.ParameterRequestSaldoCuenta;
 import com.ec.afsotec.modelo.request.ParameterRequestServicios;
+import com.ec.afsotec.repository.MovimientoCuentaEntity;
+import com.ec.afsotec.repository.MovimientoCuentaFechRepository;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api")
-@Api(value = "Api Isis", tags = "ISIS", description = "Web services para consumo externo")
+@Api(value = "Api GIFS", tags = "GIFS", description = "Web services para consumo externo")
 public class IsisController {
 
 	@Autowired
 	ServicioGenerico servioGenerico;
 
+	
+	@Autowired
+	MovimientoCuentaFechRepository cuentaFechRepository;
+	@Autowired
+	MovimientoCuentaEntity cuentaEntity;
+	
 	@RequestMapping(value = "/movimiento-cuenta/", method = RequestMethod.POST)
 	@ApiOperation(tags = "Movimiento cuenta ", value = "Movimento de cuenta EMPRESA=2,  nCuenta=2010000003, fInicio='2000-01-01', fFin='2023-02-23'  ")
 	public ResponseEntity<?> movimientoCuenta(@RequestBody ParameterRequest param) {
@@ -53,16 +59,18 @@ public class IsisController {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		try {
 
-			List<MovimientoCuentaDao> respuesta = servioGenerico.llamarProcedimiento("DB2ADMIN.SP_MOVIMIENTOS_CUENTA",
-					param);
-
-			List<String> prueba = new ArrayList();
-			prueba.add("EJEMPLO");
-			System.out.println("Respuesta  " + prueba);
-			return new ResponseEntity<>(respuesta, HttpStatus.OK);
+//			List<MovimientoCuentaDao> respuesta = servioGenerico.llamarProcedimiento("DB2ADMIN.SP_MOVIMIENTOS_CUENTA",
+//					param);
+//
+//			List<String> prueba = new ArrayList();
+			List<MovimientoCuentaFech> lista = cuentaEntity.buscarPorNombre(param.getIdMovimiento(), 10);
+//			prueba.add("EJEMPLO");
+//			System.out.println("Respuesta  " + prueba);
+			return new ResponseEntity<>(lista, HttpStatus.OK);
 		} catch (Exception e) {
 
 			System.out.println("ERROR AL CONSULTAR " + e.getMessage());
+			e.printStackTrace();
 			return new ResponseEntity<String>("Error al consumir: " + e.getMessage(), HttpStatus.OK);
 		}
 

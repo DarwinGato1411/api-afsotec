@@ -1,7 +1,6 @@
 package com.ec.afsotec.modelo.base;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 public class SaldoCuentaVDao {
 	private Short empresarId;

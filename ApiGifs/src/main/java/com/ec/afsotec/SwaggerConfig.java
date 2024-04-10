@@ -61,13 +61,13 @@ public class SwaggerConfig implements WebMvcConfigurer {
 //		return new ApiInfoBuilder().title("Documentacion con Swagger").description("Informacion adicional sobre el API")
 //				.termsOfServiceUrl("www.deckxel.com").contact(contact).version("1.0").build();
 		return new ApiInfo(
-                "ISIS",
-                "Descripción",
+                "GIFS API",
+                "API Sistema de Gestión para Instituciones Financieras",
                 "2.0",
                 "Términos y Condiciones",
-                new Contact("ISIS", "www.isis.com", "vhorozco@gmail.com"),
+                new Contact("GIFS", "www.afsotec.com", "vhorozco@gmail.com"),
                 "Licencia",
-                "www.isis.com",
+                "www.afsotec.com",
                 Collections.emptyList()
         );
 

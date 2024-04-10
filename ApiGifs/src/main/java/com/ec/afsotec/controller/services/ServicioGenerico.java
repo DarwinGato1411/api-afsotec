@@ -12,12 +12,10 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.ParameterMode;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.StoredProcedureQuery;
 
 import org.springframework.stereotype.Service;
 
-import com.ec.afsotec.Exceptions.ApiRequestException;
 import com.ec.afsotec.modelo.base.ConceptoNotasDAO;
 import com.ec.afsotec.modelo.base.MovimientoCuentaDao;
 import com.ec.afsotec.modelo.base.NotasAhorrosDao;
@@ -26,7 +24,6 @@ import com.ec.afsotec.modelo.base.ServiciosDao;
 import com.ec.afsotec.modelo.request.ParameterRequest;
 import com.ec.afsotec.modelo.request.ParameterRequestConceptoNotas;
 import com.ec.afsotec.modelo.request.ParameterRequestNotasAhorros;
-import com.ec.afsotec.modelo.request.ParameterRequestSaldoCuenta;
 import com.ec.afsotec.modelo.request.ParameterRequestServicios;
 
 @Service

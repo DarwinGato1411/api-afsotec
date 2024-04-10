@@ -13,19 +13,17 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 @SpringBootApplication
 @EnableScheduling
 @SecurityScheme(name = "com.ec.afsotec", scheme = "basic", type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER)
-public class WsIsisApplication extends SpringBootServletInitializer {
-
-	
+public class WsGifsApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
-		SpringApplication app = new SpringApplication(WsIsisApplication.class);
+		SpringApplication app = new SpringApplication(WsGifsApplication.class);
 		app.run(args);
 	}
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 
-		return application.sources(WsIsisApplication.class);
+		return application.sources(WsGifsApplication.class);
 	}
 
 	
