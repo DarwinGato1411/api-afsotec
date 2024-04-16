@@ -48,6 +48,7 @@ public class IsisController {
 	
 	@Autowired
 	MovimientoCuentaFechRepository cuentaFechRepository;
+	
 	@Autowired
 	ServicioBddEntity cuentaEntity;
 	
