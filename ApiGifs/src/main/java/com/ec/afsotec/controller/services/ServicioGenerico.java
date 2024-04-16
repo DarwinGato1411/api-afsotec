@@ -116,30 +116,30 @@ public class ServicioGenerico {
 		return listRespuesta;
 	}
 
-	public List<ServiciosDao> llamarProcedimientoServios(String procedureName, ParameterRequestServicios param) {
-
-		StoredProcedureQuery query = this.entityManager.createStoredProcedureQuery(procedureName);
-		query.registerStoredProcedureParameter("EMPRESA", Integer.class, ParameterMode.IN);
-		query.registerStoredProcedureParameter("TIPO", String.class, ParameterMode.IN);
-
-		query.setParameter("EMPRESA", param.getEmpresa());
-		query.setParameter("TIPO", param.getTipo());
-		query.execute();
-
-		List<Object[]> json = (List<Object[]>) query.getResultList();
-		List<ServiciosDao> listRespuesta = new ArrayList<>();
-		for (Object[] tupla : json) {
-
-			Short empresaId = (Short) tupla[0];
-			Short servicioId = (Short) tupla[1];
-			String decripcion = (String) tupla[2];
-
-			ServiciosDao servicios = new ServiciosDao(empresaId, servicioId, decripcion);
-			listRespuesta.add(servicios);
-		}
-
-		return listRespuesta;
-	}
+//	public List<ServiciosDao> llamarProcedimientoServios(String procedureName, ParameterRequestServicios param) {
+//
+//		StoredProcedureQuery query = this.entityManager.createStoredProcedureQuery(procedureName);
+//		query.registerStoredProcedureParameter("EMPRESA", Integer.class, ParameterMode.IN);
+//		query.registerStoredProcedureParameter("TIPO", String.class, ParameterMode.IN);
+//
+//		query.setParameter("EMPRESA", param.getEmpresa());
+//		query.setParameter("TIPO", param.getTipo());
+//		query.execute();
+//
+//		List<Object[]> json = (List<Object[]>) query.getResultList();
+//		List<ServiciosDao> listRespuesta = new ArrayList<>();
+//		for (Object[] tupla : json) {
+//
+//			Short empresaId = (Short) tupla[0];
+//			Short servicioId = (Short) tupla[1];
+//			String decripcion = (String) tupla[2];
+//
+//			ServiciosDao servicios = new ServiciosDao(empresaId, servicioId, decripcion);
+//			listRespuesta.add(servicios);
+//		}
+//
+//		return listRespuesta;
+//	}
 
 	public List<ConceptoNotasDAO> llamarProcedimientoConceptoNotas(String procedureName,
 			ParameterRequestConceptoNotas param) {

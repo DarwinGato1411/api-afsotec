@@ -8,10 +8,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.ec.afsotec.entidad.MovimientoCuentaFech;
+import com.ec.afsotec.entidad.SaldoCuentaFech;
 @SuppressWarnings("unused")
 @Repository
-public interface MovimientoCuentaFechRepository  extends JpaRepository<MovimientoCuentaFech, BigDecimal>{
+public interface MovimientoCuentaFechRepository  extends JpaRepository<SaldoCuentaFech, BigDecimal>{
 //
 //	@Query("SELECT u FROM MovimientoCuentaFech u WHERE  u.socioId=:mai")
 //	List<MovimientoCuentaFech> findIdMovimiento(
