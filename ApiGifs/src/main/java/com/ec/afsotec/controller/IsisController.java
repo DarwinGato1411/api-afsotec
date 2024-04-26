@@ -18,10 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.ec.afsotec.controller.services.ServicioGenerico;
+import com.ec.afsotec.entidad.MailerClass;
 import com.ec.afsotec.entidad.MovimientoCuentaFech;
 import com.ec.afsotec.entidad.SaldoCreditoFech;
 import com.ec.afsotec.entidad.SaldoCuentaFech;
-import com.ec.afsotec.modelo.base.ServiciosDao;
+import com.ec.afsotec.modelo.request.MailRequest;
 import com.ec.afsotec.modelo.request.MovimientoCuentaParam;
 import com.ec.afsotec.modelo.request.ParameterRequestServicios;
 import com.ec.afsotec.modelo.request.SaldoCreditoParam;
@@ -29,7 +30,6 @@ import com.ec.afsotec.modelo.request.SaldoCuentaParam;
 import com.ec.afsotec.repository.MovimientoCuentaFechRepository;
 import com.ec.afsotec.repository.RepositoryGenerico;
 import com.ec.afsotec.repository.ServicioBddEntity;
-import com.google.gson.JsonObject;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -41,22 +41,21 @@ public class IsisController {
 
 	@Autowired
 	ServicioGenerico servioGenerico;
-	
+
 	@Autowired
 	RepositoryGenerico repositoryGenerico;
 
-	
 	@Autowired
 	MovimientoCuentaFechRepository cuentaFechRepository;
 	@Autowired
 	ServicioBddEntity cuentaEntity;
-	
+
 	@RequestMapping(value = "/movimiento-cuenta/", method = RequestMethod.POST)
 	@ApiOperation(tags = "Movimiento cuenta ", value = "Movimento de cuenta EMPRESA=2,  nCuenta=2010000003, fInicio='2000-01-01', fFin='2023-02-23'  ")
 	public ResponseEntity<?> movimientoCuenta(@RequestBody MovimientoCuentaParam param) {
 		/* CAMBIAR EL MODELO DE RESPUESTA CON TRU O FALSE */
 		/* Usuario y password para generar el TOKEN */
-		
+
 		Calendar calendar = Calendar.getInstance();
 		String pattern = "yyyy/MM/dd";
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
@@ -73,7 +72,8 @@ public class IsisController {
 //					param);
 //
 //			List<String> prueba = new ArrayList();
-			List<MovimientoCuentaFech> lista = cuentaEntity.buscarMovi(param.getIdEmpresa(),param.getCuentaAhorrosId(),simpleDateFormat.parse(fechaInicio),simpleDateFormat.parse(fechaInicio));
+			List<MovimientoCuentaFech> lista = cuentaEntity.buscarMovi(param.getIdEmpresa(), param.getCuentaAhorrosId(),
+					simpleDateFormat.parse(fechaInicio), simpleDateFormat.parse(fechaInicio));
 //			prueba.add("EJEMPLO");
 //			System.out.println("Respuesta  " + prueba);
 			return new ResponseEntity<>(lista, HttpStatus.OK);
@@ -88,7 +88,7 @@ public class IsisController {
 
 	@RequestMapping(value = "/saldo-cuenta/", method = RequestMethod.POST)
 	@ApiOperation(tags = "Saldo cuenta ", value = "Saldo cuenta")
-	public ResponseEntity<?> saldoCuenta(@RequestBody  SaldoCuentaParam param) {
+	public ResponseEntity<?> saldoCuenta(@RequestBody SaldoCuentaParam param) {
 		/* CAMBIAR EL MODELO DE RESPUESTA CON TRU O FALSE */
 		/* Usuario y password para generar el TOKEN */
 		HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory(
@@ -97,7 +97,8 @@ public class IsisController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		try {
-			List<SaldoCuentaFech> lista = cuentaEntity.buscarPorNumeroIdentificacion(param.getNumeroCuenta(),param.getIdentificacion());
+			List<SaldoCuentaFech> lista = cuentaEntity.buscarPorNumeroIdentificacion(param.getNumeroCuenta(),
+					param.getIdentificacion());
 
 			return new ResponseEntity<>(lista, HttpStatus.OK);
 		} catch (Exception e) {
@@ -111,7 +112,7 @@ public class IsisController {
 
 	@RequestMapping(value = "/saldo-credito/", method = RequestMethod.POST)
 	@ApiOperation(tags = "Saldo  Credito", value = "Saldo del credito")
-	public ResponseEntity<?> saldoCredito(@RequestBody  SaldoCreditoParam param) {
+	public ResponseEntity<?> saldoCredito(@RequestBody SaldoCreditoParam param) {
 		/* CAMBIAR EL MODELO DE RESPUESTA CON TRU O FALSE */
 		/* Usuario y password para generar el TOKEN */
 		HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory(
@@ -120,7 +121,8 @@ public class IsisController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		try {
-			List<SaldoCreditoFech> lista = cuentaEntity.buscarSaldoCredito(param.getNumeroCredito(),param.getIdentificacion());
+			List<SaldoCreditoFech> lista = cuentaEntity.buscarSaldoCredito(param.getNumeroCredito(),
+					param.getIdentificacion());
 
 			return new ResponseEntity<>(lista, HttpStatus.OK);
 		} catch (Exception e) {
@@ -131,9 +133,7 @@ public class IsisController {
 		}
 
 	}
-	
-	
-	
+
 	@RequestMapping(value = "/servicio/", method = RequestMethod.POST)
 	@ApiOperation(tags = "Servicios ", value = "Movimento de cuenta EMPRESA=2,   TIPO='I'")
 	public ResponseEntity<?> servicios(@RequestBody ParameterRequestServicios param) {
@@ -144,9 +144,42 @@ public class IsisController {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 
 		try {
-			String valorRes = repositoryGenerico.callStoreProcedure("SP_NOTAS_AHORROS",param);
+			String valorRes = repositoryGenerico.callStoreProcedure("SP_NOTAS_AHORROS", param);
+			if(valorRes.toUpperCase().contains("CORRECT")) {
+				MailerClass mail = new MailerClass();
+				mail.sendMailSimple(param.getMail(),"Transaccion exitosa", param.getNombreSocio(),
+						param.getPar_valor());
+				return new ResponseEntity<>(valorRes, HttpStatus.OK);
+				
+			}else {
+				
+				return new ResponseEntity<>(valorRes, HttpStatus.BAD_GATEWAY);
+			}
+		
+			
 
-			return new ResponseEntity<>(valorRes, HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println("ERROR AL CONSULTAR " + e.getMessage());
+			return new ResponseEntity<String>("Error al consumir: " + e.getMessage(), HttpStatus.OK);
+		}
+
+	}
+
+	@RequestMapping(value = "/mail/", method = RequestMethod.POST)
+	@ApiOperation(tags = "Mail ", value = "Envio de correo")
+	public ResponseEntity<?> envioMail(@RequestBody MailRequest param) {
+		HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory(
+				HttpClientBuilder.create().build());
+		RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		try {
+			MailerClass mail = new MailerClass();
+			mail.sendMailSimple(param.getAddress(),param.getAsuntoInf(), param.getNombreCliente(),
+					1);
+
+			return new ResponseEntity<>("Correcto", HttpStatus.OK);
 
 		} catch (Exception e) {
 			System.out.println("ERROR AL CONSULTAR " + e.getMessage());

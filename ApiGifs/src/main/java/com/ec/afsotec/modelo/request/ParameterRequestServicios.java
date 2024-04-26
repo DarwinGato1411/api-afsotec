@@ -7,6 +7,10 @@ public class ParameterRequestServicios {
 	Integer par_concepto_id;
 	Integer par_valor;
 	String par_observacion;
+	String nombreSocio;
+	String mail;
+	
+	
 	public Integer getPar_empresa_id() {
 		return par_empresa_id;
 	}
@@ -42,6 +46,18 @@ public class ParameterRequestServicios {
 	}
 	public void setPar_observacion(String par_observacion) {
 		this.par_observacion = par_observacion;
+	}
+	public String getNombreSocio() {
+		return nombreSocio;
+	}
+	public void setNombreSocio(String nombreSocio) {
+		this.nombreSocio = nombreSocio;
+	}
+	public String getMail() {
+		return mail;
+	}
+	public void setMail(String mail) {
+		this.mail = mail;
 	}
 
 }
