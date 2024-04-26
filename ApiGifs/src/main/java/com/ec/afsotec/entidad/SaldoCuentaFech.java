@@ -13,6 +13,8 @@ public class SaldoCuentaFech {
 
 
 	@Id
+	@Column(name = "NUMERO_CUENTA")
+	private Integer numeroCuenta;
 	@Column(name = "SOCIO_ID")
 	private BigDecimal socioId;
 
@@ -22,8 +24,7 @@ public class SaldoCuentaFech {
 	private String mensaje;
 	@Column(name = "IDENTIFICACION")
 	private String identificacion;
-	@Column(name = "NUMERO_CUENTA")
-	private BigDecimal numeroCuenta;
+
 	@Column(name = "PRODUCTO")
 	private BigDecimal producto;
 
@@ -66,11 +67,11 @@ public class SaldoCuentaFech {
 		this.identificacion = identificacion;
 	}
 
-	public BigDecimal getNumeroCuenta() {
+	public Integer getNumeroCuenta() {
 		return numeroCuenta;
 	}
 
-	public void setNumeroCuenta(BigDecimal numeroCuenta) {
+	public void setNumeroCuenta(Integer numeroCuenta) {
 		this.numeroCuenta = numeroCuenta;
 	}
 

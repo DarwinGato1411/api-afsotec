@@ -20,12 +20,12 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
-	<repositories>
-		<repository>
-			<id>com.ibm.db2.jcc</id>
-			<url>https://artifacts.alfresco.com/nexus/content/repositories/public/</url>
-		</repository>
-	</repositories>
+<!--	<repositories>-->
+<!--		<repository>-->
+<!--			<id>com.ibm.db2.jcc</id>-->
+<!--			<url>https://artifacts.alfresco.com/nexus/content/repositories/public/</url>-->
+<!--		</repository>-->
+<!--	</repositories>-->
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -45,11 +45,11 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.ibm.db2.jcc</groupId>
-			<artifactId>db2jcc4</artifactId>
-			<version>10.1</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>com.ibm.db2.jcc</groupId>-->
+<!--			<artifactId>db2jcc4</artifactId>-->
+<!--			<version>10.1</version>-->
+<!--		</dependency>-->
 		<!-- https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc8 -->
 		<!-- <dependency> -->
 		<!-- <groupId>com.oracle.database.jdbc</groupId> -->

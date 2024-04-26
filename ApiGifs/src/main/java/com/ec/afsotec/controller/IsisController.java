@@ -1,5 +1,6 @@
 package com.ec.afsotec.controller;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -178,7 +179,7 @@ public class IsisController {
 		try {
 			MailerClass mail = new MailerClass();
 			mail.sendMailSimple(param.getAddress(),param.getAsuntoInf(), param.getNombreCliente(),
-					1);
+					BigDecimal.ZERO);
 
 			return new ResponseEntity<>("Correcto", HttpStatus.OK);
 

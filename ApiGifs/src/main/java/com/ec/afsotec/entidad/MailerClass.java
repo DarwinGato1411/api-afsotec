@@ -91,7 +91,7 @@ public class MailerClass {
 //      m.setRecipients(Message.RecipientType.TO,
 //                    InternetAddress.parse(address));
 	public String sendMailSimple(String address, String asuntoInf, String nombreCliente,
-			Integer valor) throws java.rmi.RemoteException {
+			BigDecimal valor) throws java.rmi.RemoteException {
 
 		try {
 //                        String usuarioSmpt = "deckxelec@gmail.com";

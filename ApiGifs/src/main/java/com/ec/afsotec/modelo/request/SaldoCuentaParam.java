@@ -6,13 +6,13 @@ import java.util.Date;
 public class SaldoCuentaParam {
 	private String identificacion;
 
-	private BigDecimal numeroCuenta;
+	private Integer numeroCuenta;
 
 	public SaldoCuentaParam() {
 		super();
 	}
 
-	public SaldoCuentaParam(String identificacion, BigDecimal numeroCuenta) {
+	public SaldoCuentaParam(String identificacion, Integer numeroCuenta) {
 		super();
 		this.identificacion = identificacion;
 		this.numeroCuenta = numeroCuenta;
@@ -26,11 +26,11 @@ public class SaldoCuentaParam {
 		this.identificacion = identificacion;
 	}
 
-	public BigDecimal getNumeroCuenta() {
+	public Integer getNumeroCuenta() {
 		return numeroCuenta;
 	}
 
-	public void setNumeroCuenta(BigDecimal numeroCuenta) {
+	public void setNumeroCuenta(Integer numeroCuenta) {
 		this.numeroCuenta = numeroCuenta;
 	}
 

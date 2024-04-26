@@ -1,5 +1,7 @@
 package com.ec.afsotec.repository;
 
+import java.math.BigDecimal;
+
 import javax.persistence.EntityManager;
 import javax.persistence.ParameterMode;
 import javax.persistence.PersistenceContext;
@@ -28,7 +30,7 @@ public class RepositoryGenerico {
 			query.registerStoredProcedureParameter("par_cuenta_id", Integer.class, ParameterMode.IN);
 			query.registerStoredProcedureParameter("par_transaccion_id", String.class, ParameterMode.IN);
 			query.registerStoredProcedureParameter("par_concepto_id", Integer.class, ParameterMode.IN);
-			query.registerStoredProcedureParameter("par_valor", Integer.class, ParameterMode.IN);
+			query.registerStoredProcedureParameter("par_valor", BigDecimal.class, ParameterMode.IN);
 			query.registerStoredProcedureParameter("par_observacion", String.class, ParameterMode.IN);
 			query.registerStoredProcedureParameter("json_param", String.class, ParameterMode.OUT);
 			query.setParameter("par_empresa_id", param.getPar_empresa_id());
@@ -45,6 +47,7 @@ public class RepositoryGenerico {
 
 		} catch (Exception e) {
 			// TODO: handle exception
+			System.err.println("ERROR " + e.getMessage());
 			return "{\"estado\":false, \"message\":\"error en el procedimiento Java\"}";
 		}
 

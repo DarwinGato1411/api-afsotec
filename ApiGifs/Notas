@@ -1,0 +1,25 @@
+----------------
+Pendientes:
+----------------
+-Creación, o modificaion de tablas de segurides
+-Activación de pistas de auditoria en tablas
+-Creación de tablas de Log
+-Creación del proceso de generacion de OTP
+
+
+----------------
+Consideraciones:
+----------------
+-Compilado con java 11  -> obligatorio desplegar con java 11
+-Al compilar asegurarse que la configuración de la aplicación (application-properties) en la propiedad de generación de objetos de base de datos, su valor sea: none (spring.jpa.hibernate.ddl-auto=none) siempre que no estéb creados o no se desea actualizar los objetos
+-Para la publicación, asgurarse que los parametros del archivo (application-properties) direcciones a la base de datos destino. Se lo puede ralizar una vez compilado en el directorio MANIEST
+-Para la ejecución: desde la línea de comandos digitar java -jar nombre_archivo_jar_compilado &
+-Para Compilar y Generar el Jar: Proyecto -> Run As -> Maven Instal
+-Para Borrar el Jar (Limpiar Proyecto) Proyecto -> Run As -> Maven Clean
+-Comandos GIT
+git pull (bajar)
+git add .
+git commit -m 'Cambio '
+git config --global user.email "vhorozco@gmail.com"
+git push (subir)
+

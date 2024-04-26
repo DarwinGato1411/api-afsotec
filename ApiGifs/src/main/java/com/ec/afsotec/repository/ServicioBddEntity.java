@@ -20,7 +20,7 @@ public class ServicioBddEntity {
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	public List<SaldoCuentaFech> buscarPorNumeroIdentificacion(BigDecimal numero, String identificacion) {
+	public List<SaldoCuentaFech> buscarPorNumeroIdentificacion(Integer numero, String identificacion) {
 
 		Query query = entityManager.createQuery(
 				"SELECT u FROM SaldoCuentaFech u WHERE  (u.numeroCuenta=:numeroCuenta or u.identificacion=:identificacion)",
