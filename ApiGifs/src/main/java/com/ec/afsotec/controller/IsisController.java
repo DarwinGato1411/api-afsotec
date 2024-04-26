@@ -47,6 +47,7 @@ public class IsisController {
 
 	@Autowired
 	MovimientoCuentaFechRepository cuentaFechRepository;
+	
 	@Autowired
 	ServicioBddEntity cuentaEntity;
 
@@ -57,7 +58,7 @@ public class IsisController {
 		/* Usuario y password para generar el TOKEN */
 
 		Calendar calendar = Calendar.getInstance();
-		String pattern = "yyyy/MM/dd";
+		String pattern = "dd/MM/yyyy";
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 		String fechaInicio = simpleDateFormat.format(param.getFechaInicio());
 		String fechafin = simpleDateFormat.format(param.getFechaFin());
