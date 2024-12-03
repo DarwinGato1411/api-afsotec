@@ -2,16 +2,15 @@ package com.ec.afsotec.modelo.request;
 
 import java.math.BigDecimal;
 
-public class ParameterRequestServicios {
+public class ParameterRequestRetiro {
 	Integer par_empresa_id;
 	Integer par_cuenta_id;
+	String par_nreferencia;
 	String par_transaccion_id;
 	Integer par_concepto_id;
 	BigDecimal par_valor;
-	String par_observacion;
-//	String nombreSocio;
-	String par_nreferencia;
-//	String mail;
+	String nombreSocio;
+	String mail;
 	
 	
 	public Integer getPar_empresa_id() {
@@ -27,6 +26,12 @@ public class ParameterRequestServicios {
 		this.par_cuenta_id = par_cuenta_id;
 	}
 	
+	public String getPar_nreferencia() {
+		return par_nreferencia;
+	}
+	public void setPar_nreferencia(String par_nreferencia) {
+		this.par_nreferencia = par_nreferencia;
+	}
 	public String getPar_transaccion_id() {
 		return par_transaccion_id;
 	}
@@ -45,13 +50,6 @@ public class ParameterRequestServicios {
 	public void setPar_valor(BigDecimal par_valor) {
 		this.par_valor = par_valor;
 	}
-	public String getPar_observacion() {
-		return par_observacion;
-	}
-	public void setPar_observacion(String par_observacion) {
-		this.par_observacion = par_observacion;
-	}
-/*
 	public String getNombreSocio() {
 		return nombreSocio;
 	}
@@ -64,13 +62,5 @@ public class ParameterRequestServicios {
 	public void setMail(String mail) {
 		this.mail = mail;
 	}
-*/
-	public String getPar_nreferencia() {
-		return par_nreferencia;
-	}
-	public void setPar_nreferencia(String par_nreferencia) {
-		this.par_nreferencia = par_nreferencia;
-	}
 
-	
 }

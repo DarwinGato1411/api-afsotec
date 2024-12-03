@@ -6,9 +6,9 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class MovimientoCuentaParam {
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private Date fechaInicio;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private Date fechaFin;
 
 	private BigDecimal idEmpresa;

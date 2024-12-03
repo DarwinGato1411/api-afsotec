@@ -1,21 +1,20 @@
 package com.ec.afsotec.modelo.request;
 
-import java.math.BigDecimal;
-import java.util.Date;
+//import java.math.BigDecimal;
+//import java.util.Date;
 
 public class SaldoCuentaParam {
 	private String identificacion;
-
-	private Integer numeroCuenta;
+	private Integer empresa;
 
 	public SaldoCuentaParam() {
 		super();
 	}
 
-	public SaldoCuentaParam(String identificacion, Integer numeroCuenta) {
+	public SaldoCuentaParam(String identificacion, Integer empresa) {
 		super();
 		this.identificacion = identificacion;
-		this.numeroCuenta = numeroCuenta;
+		this.empresa = empresa;
 	}
 
 	public String getIdentificacion() {
@@ -26,12 +25,15 @@ public class SaldoCuentaParam {
 		this.identificacion = identificacion;
 	}
 
-	public Integer getNumeroCuenta() {
-		return numeroCuenta;
+	public Integer getEmpresa() {
+		return empresa;
 	}
 
-	public void setNumeroCuenta(Integer numeroCuenta) {
-		this.numeroCuenta = numeroCuenta;
+	public void setEmpresa(Integer empresa) {
+		this.empresa = empresa;
 	}
+
+
+
 
 }

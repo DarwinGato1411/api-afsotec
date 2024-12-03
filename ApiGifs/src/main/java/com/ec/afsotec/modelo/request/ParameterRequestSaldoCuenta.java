@@ -1,5 +1,7 @@
 package com.ec.afsotec.modelo.request;
 
+// al parecer hay que eliminar esta clase
+
 public class ParameterRequestSaldoCuenta {
 	private Integer idEmpresa;
 	private Integer nCuenta;

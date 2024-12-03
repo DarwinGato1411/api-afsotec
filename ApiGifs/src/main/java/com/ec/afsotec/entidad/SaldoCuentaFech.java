@@ -15,13 +15,16 @@ public class SaldoCuentaFech {
 	@Id
 	@Column(name = "NUMERO_CUENTA")
 	private Integer numeroCuenta;
+	
 	@Column(name = "SOCIO_ID")
 	private BigDecimal socioId;
 
 	@Column(name = "TITULAR_CUENTA")
 	private String titularCuenta;
+	
 	@Column(name = "MENSAJE")
 	private String mensaje;
+	
 	@Column(name = "IDENTIFICACION")
 	private String identificacion;
 
@@ -30,11 +33,23 @@ public class SaldoCuentaFech {
 
 	@Column(name = "ESTATUS_CUENTA")
 	private String estatusCuenta;
+	
 	@Column(name = "SALDO_TOTAL")
 	private BigDecimal saldoCuenta;
+	
 	@Column(name = "SALDO_DISPONIBLE")
 	private BigDecimal saldoDisponible;
 
+	@Column(name = "CELULAR")
+	private String celular;
+	
+	@Column(name = "EMAIL")
+	private String email;
+	
+	@Column(name = "EMPRESA_ID")
+	private Integer empresa;
+	
+	
 	public BigDecimal getSocioId() {
 		return socioId;
 	}
@@ -107,6 +122,29 @@ public class SaldoCuentaFech {
 		this.saldoDisponible = saldoDisponible;
 	}
 
+	public String getCelular() {
+		return celular;
+	}
+
+	public void setCelular(String celular) {
+		this.celular = celular;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public Integer getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Integer empresa) {
+		this.empresa = empresa;
+	}
 
 
 

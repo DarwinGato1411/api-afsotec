@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "SALDO_CREDTO_FETCH")
+@Table(name = "SALDO_CREDITO_FETCH")
 public class SaldoCreditoFech {
 	@Id
 	@Column(name = "NUMERO_CREDITO")
@@ -16,30 +16,46 @@ public class SaldoCreditoFech {
 
 	@Column(name = "IDENTIFICACION")
 	private String identificacion;
+
 	@Column(name = "NOMBRES")
 	private String nombres;
+
 	@Column(name = "ESTATUS_CREDITO")
 	private String estatusCredito;
+
 	@Column(name = "SALDO_CAPITAL")
 	private BigDecimal saldoCapital;
+
 	@Column(name = "INTERES")
 	private BigDecimal interes;
+
 	@Column(name = "MORA")
 	private BigDecimal mora;
+
 	@Column(name = "GESTION")
 	private BigDecimal gestion;
+
 	@Column(name = "SEGURO")
 	private BigDecimal seguro;
+
 	@Column(name = "TOTAL")
 	private BigDecimal total;
+
 	@Column(name = "MAIL")
 	private String mail;
+
 	@Column(name = "CELULAR")
 	private String celular;
+
 	@Column(name = "CUENTA_AHORRO_ID")
 	private Integer cuentaAhorrosId;
+
 	@Column(name = "ESTATUS_CUENTA")
 	private String estatusCuenta;
+
+	@Column(name = "EMPRESA_ID")
+	private Integer empresa;
+	
 	public BigDecimal getNumeroCredito() {
 		return numeroCredito;
 	}
@@ -123,6 +139,12 @@ public class SaldoCreditoFech {
 	}
 	public void setEstatusCuenta(String estatusCuenta) {
 		this.estatusCuenta = estatusCuenta;
+	}
+	public Integer getEmpresa() {
+		return empresa;
+	}
+	public void setEmpresa(Integer empresa) {
+		this.empresa = empresa;
 	}
 	
 	

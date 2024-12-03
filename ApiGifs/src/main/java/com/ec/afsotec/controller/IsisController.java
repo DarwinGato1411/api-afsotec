@@ -19,17 +19,23 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.ec.afsotec.controller.services.ServicioGenerico;
+import com.ec.afsotec.entidad.ConciliacionFech;
 import com.ec.afsotec.entidad.MailerClass;
 import com.ec.afsotec.entidad.MovimientoCuentaFech;
 import com.ec.afsotec.entidad.SaldoCreditoFech;
 import com.ec.afsotec.entidad.SaldoCuentaFech;
+import com.ec.afsotec.modelo.request.ConciliacionParam;
 import com.ec.afsotec.modelo.request.MailRequest;
 import com.ec.afsotec.modelo.request.MovimientoCuentaParam;
+import com.ec.afsotec.modelo.request.ParameterRequestConfirmaRetiro;
+import com.ec.afsotec.modelo.request.ParameterRequestRetiro;
 import com.ec.afsotec.modelo.request.ParameterRequestServicios;
 import com.ec.afsotec.modelo.request.SaldoCreditoParam;
 import com.ec.afsotec.modelo.request.SaldoCuentaParam;
 import com.ec.afsotec.repository.MovimientoCuentaFechRepository;
+import com.ec.afsotec.repository.RepositoryConfirmaRetiro;
 import com.ec.afsotec.repository.RepositoryGenerico;
+import com.ec.afsotec.repository.RepositoryRetiro;
 import com.ec.afsotec.repository.ServicioBddEntity;
 
 import io.swagger.annotations.Api;
@@ -45,13 +51,21 @@ public class IsisController {
 
 	@Autowired
 	RepositoryGenerico repositoryGenerico;
-
+	
 	@Autowired
-	MovimientoCuentaFechRepository cuentaFechRepository;
+	RepositoryRetiro repositoryRetiro;
+	
+	@Autowired
+	RepositoryConfirmaRetiro repositoryConfirmaRetiro;
+	
+//	@Autowired
+//	MovimientoCuentaFechRepository cuentaFechRepository;
 	
 	@Autowired
 	ServicioBddEntity cuentaEntity;
 
+
+	
 	@RequestMapping(value = "/movimiento-cuenta/", method = RequestMethod.POST)
 	@ApiOperation(tags = "Movimiento cuenta ", value = "Movimento de cuenta EMPRESA=2,  nCuenta=2010000003, fInicio='2000-01-01', fFin='2023-02-23'  ")
 	public ResponseEntity<?> movimientoCuenta(@RequestBody MovimientoCuentaParam param) {
@@ -88,6 +102,46 @@ public class IsisController {
 
 	}
 
+// horozco metodo de conciliacion
+
+	@RequestMapping(value = "/conciliacion/", method = RequestMethod.POST)
+	@ApiOperation(tags = "Conciliacion Movimientos", value = "Movimentos EMPRESA=1,  fCorte='2000-01-01'")
+	public ResponseEntity<?> conciliacion(@RequestBody ConciliacionParam param) {
+
+		Calendar calendar = Calendar.getInstance();
+		String pattern = "dd/MM/yyyy";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+		String fCorte = simpleDateFormat.format(param.getfCorte());
+		System.out.println(fCorte);
+//		String fechafin = simpleDateFormat.format(param.getFechaFin());
+		HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory(
+				HttpClientBuilder.create().build());
+		RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		try {
+
+//			List<MovimientoCuentaDao> respuesta = servioGenerico.llamarProcedimiento("DB2ADMIN.SP_MOVIMIENTOS_CUENTA",
+//					param);
+//
+//			List<String> prueba = new ArrayList();
+			List<ConciliacionFech> lista = cuentaEntity.buscarMovimientos(param.getIdEmpresa(), simpleDateFormat.parse(fCorte));
+//			prueba.add("EJEMPLO");
+//			System.out.println("Respuesta  " + prueba);
+			return new ResponseEntity<>(lista, HttpStatus.OK);
+		} catch (Exception e) {
+
+			System.out.println("ERROR AL CONSULTAR " + e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<String>("Error al consumir: " + e.getMessage(), HttpStatus.OK);
+		}
+
+	}	
+	
+	
+// fin horozco	
+	
+	
 	@RequestMapping(value = "/saldo-cuenta/", method = RequestMethod.POST)
 	@ApiOperation(tags = "Saldo cuenta ", value = "Saldo cuenta")
 	public ResponseEntity<?> saldoCuenta(@RequestBody SaldoCuentaParam param) {
@@ -99,7 +153,7 @@ public class IsisController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		try {
-			List<SaldoCuentaFech> lista = cuentaEntity.buscarPorNumeroIdentificacion(param.getNumeroCuenta(),
+			List<SaldoCuentaFech> lista = cuentaEntity.buscarPorNumeroIdentificacion(param.getEmpresa(),
 					param.getIdentificacion());
 
 			return new ResponseEntity<>(lista, HttpStatus.OK);
@@ -123,7 +177,7 @@ public class IsisController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		try {
-			List<SaldoCreditoFech> lista = cuentaEntity.buscarSaldoCredito(param.getNumeroCredito(),
+			List<SaldoCreditoFech> lista = cuentaEntity.buscarSaldoCredito(param.getEmpresa(),
 					param.getIdentificacion());
 
 			return new ResponseEntity<>(lista, HttpStatus.OK);
@@ -136,8 +190,10 @@ public class IsisController {
 
 	}
 
-	@RequestMapping(value = "/servicio/", method = RequestMethod.POST)
-	@ApiOperation(tags = "Servicios ", value = "Movimento de cuenta EMPRESA=2,   TIPO='I'")
+
+	
+	@RequestMapping(value = "/notas-ahorros/", method = RequestMethod.POST)
+	@ApiOperation(tags = "Notas CR-DB Ahorros", value = "Movimento de cuenta EMPRESA=1,   TIPO='I'")
 	public ResponseEntity<?> servicios(@RequestBody ParameterRequestServicios param) {
 		HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory(
 				HttpClientBuilder.create().build());
@@ -147,6 +203,83 @@ public class IsisController {
 
 		try {
 			String valorRes = repositoryGenerico.callStoreProcedure("SP_NOTAS_AHORROS", param);
+ 
+			if(valorRes.toUpperCase().contains("CORRECT")) {
+//				MailerClass mail = new MailerClass();
+//				mail.sendMailSimple(param.getMail(),"Transaccion exitosa", param.getNombreSocio(),
+//						param.getPar_valor());
+				return new ResponseEntity<>(valorRes, HttpStatus.OK);
+				
+			}else {
+				
+				return new ResponseEntity<>(valorRes, HttpStatus.BAD_GATEWAY);
+			}
+		} catch (Exception e) {
+			System.out.println("ERROR AL CONSULTAR " + e.getMessage());
+			return new ResponseEntity<String>("Error al consumir: " + e.getMessage(), HttpStatus.OK);
+		}
+
+	}
+
+	// Servicio de horozco RETIROS CON OTP
+	
+	@RequestMapping(value = "/retiro/", method = RequestMethod.POST)
+	@ApiOperation(tags = "Retiro Ahorros", value = "Movimento de retiros de cuenta con código OTP EMPRESA=1,   TIPO='I'")
+	public ResponseEntity<?> retiros(@RequestBody ParameterRequestRetiro parame) {
+		HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory(
+				HttpClientBuilder.create().build());
+		RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		try {
+			String valorRes = repositoryRetiro.callStoreProcedure("SP_RETIRO_INTERFAZ", parame); // 
+			//System.out.print(valorRes);
+			String oTP = valorRes.substring(1,11);
+			//System.out.print(oTP);
+			if(valorRes.toUpperCase(). contains("CORRECT")) {
+				MailerClass mail = new MailerClass();
+				mail.sendMailSimple(parame.getMail(), oTP , parame.getNombreSocio(),
+						parame.getPar_valor());
+				return new ResponseEntity<>(valorRes, HttpStatus.OK);
+				
+			}else {
+				
+				return new ResponseEntity<>(valorRes, HttpStatus.BAD_GATEWAY);
+			}
+		
+			
+
+		} catch (Exception e) {
+			System.out.println("ERROR AL CONSULTAR " + e.getMessage());
+			return new ResponseEntity<String>("Error al consumir: " + e.getMessage(), HttpStatus.OK);
+		}
+
+	}
+	
+		// Fin servicio horozco
+
+	
+	
+
+	
+	
+	
+	// Servicio de horozco COONFIRMACION DE RETIROS MEDIANTE OTP
+	
+	@RequestMapping(value = "/confirma-retiro/", method = RequestMethod.POST)
+	@ApiOperation(tags = "Confirmacion Retiro", value = "Retiros de cuenta con código OTP")
+	public ResponseEntity<?> confirmaRetiro(@RequestBody ParameterRequestConfirmaRetiro param) {
+		HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory(
+				HttpClientBuilder.create().build());
+		RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		try {
+//			String valorRes = repositoryConfirmaRetiro.callStoreProcedure("SP_RETIRO_INTERFAZ", parame);  
+
+			String valorRes = repositoryConfirmaRetiro.callStoreProcedure("SP_CONFIRMA_RETIRO", param);
 			if(valorRes.toUpperCase().contains("CORRECT")) {
 				MailerClass mail = new MailerClass();
 				mail.sendMailSimple(param.getMail(),"Transaccion exitosa", param.getNombreSocio(),
@@ -166,7 +299,15 @@ public class IsisController {
 		}
 
 	}
-
+	
+		// Fin servicio horozco CONFIRMACION RETIRO
+	
+	
+	
+	
+	
+	
+	
 	@RequestMapping(value = "/mail/", method = RequestMethod.POST)
 	@ApiOperation(tags = "Mail ", value = "Envio de correo")
 	public ResponseEntity<?> envioMail(@RequestBody MailRequest param) {

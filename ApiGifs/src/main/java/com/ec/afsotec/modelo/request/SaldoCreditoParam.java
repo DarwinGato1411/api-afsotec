@@ -6,7 +6,7 @@ import java.util.Date;
 public class SaldoCreditoParam {
 	private String identificacion;
 
-	private BigDecimal numeroCredito;
+	private Integer empresa;
 
 	public SaldoCreditoParam() {
 		super();
@@ -20,13 +20,14 @@ public class SaldoCreditoParam {
 		this.identificacion = identificacion;
 	}
 
-	public BigDecimal getNumeroCredito() {
-		return numeroCredito;
+	public Integer getEmpresa() {
+		return empresa;
 	}
 
-	public void setNumeroCredito(BigDecimal numeroCredito) {
-		this.numeroCredito = numeroCredito;
+	public void setEmpresa(Integer empresa) {
+		this.empresa = empresa;
 	}
+
 
 	
 }
