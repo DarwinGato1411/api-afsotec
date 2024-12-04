@@ -11,6 +11,7 @@ public class ParameterRequestRetiro {
 	BigDecimal par_valor;
 	String nombreSocio;
 	String mail;
+	String celular;
 	
 	
 	public Integer getPar_empresa_id() {
@@ -61,6 +62,12 @@ public class ParameterRequestRetiro {
 	}
 	public void setMail(String mail) {
 		this.mail = mail;
+	}
+	public String getCelular() {
+		return celular;
+	}
+	public void setCelular(String celular) {
+		this.celular = celular;
 	}
 
 }
