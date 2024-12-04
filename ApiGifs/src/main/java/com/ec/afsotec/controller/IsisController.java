@@ -260,7 +260,7 @@ public class IsisController {
 				param.setMessageId(messageId);
 				param.setTransactionId(transactionId);
 				respuesta = servicioGeneral.invocarSms(param);
-				if (!respuesta.getDesError().contains("OK")) {
+				if (respuesta.getDesError().contains("OK")) {
 					respWs.setStatusSms("SMS enviado");
 				}else {
 					
@@ -270,12 +270,13 @@ public class IsisController {
 				/* ENVIA EL MAIL */
 				MailerClass mail = new MailerClass();
 				String estado=mail.sendMailSimple(parame.getMail(), oTP, parame.getNombreSocio(), parame.getPar_valor());
-				if (!estado.contains("correcto")) {
-					respWs.setStatusSms("Mail enviado");
+				if (estado.contains("correcto")) {
+					respWs.setStatusMail(estado);
 				}else {
 					
-					respWs.setStatusSms("Error al enviar Mail");
+					respWs.setStatusMail("Error al enviar Mail");
 				}
+				
 				return new ResponseEntity<>(respWs, HttpStatus.OK);
 
 			} else {

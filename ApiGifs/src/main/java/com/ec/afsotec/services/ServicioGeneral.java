@@ -37,7 +37,7 @@ public class ServicioGeneral {
 		try {
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-//			headers.set("jde-AIS-Auth", token.getUserInfo().getToken().replace("\"", ""));
+			headers.set("Authorization", "Basic OTk5OTkwMjI2Ok5oVzFqOG1TZHYwRzFRYlY=");
 
 			// create request
 			HttpEntity<RequestSms> requestBody = new HttpEntity<RequestSms>(param, headers);
